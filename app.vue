@@ -100,7 +100,7 @@ interface JobProps {
 
 const jobs = ref<JobProps[]>([]);
 const isLoading = ref(true);
-const apiUrl = "http://localhost:3003/jobs";
+const apiUrl = "https://un-api.ethanloo.cn/jobs";
 const searchValue = ref("");
 
 const loadAll = async () => {

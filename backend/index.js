@@ -60,6 +60,6 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 // 启动服务器
-app.listen(3003, () => {
-    console.log('Server started on port 3003');
+app.listen(9934, () => {
+    console.log('Server started on port 9934');
 });
