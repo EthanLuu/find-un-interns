@@ -25,7 +25,7 @@
                         :width="width"
                         stripe
                     >
-                        <el-table-column prop="title" label="标题" width="300">
+                        <el-table-column prop="title" label="标题">
                             <template #default="scope">
                                 <el-link :href="scope.row.link">
                                     {{ scope.row.title }}
@@ -33,9 +33,16 @@
                             </template>
                         </el-table-column>
                         <el-table-column
+                            prop="country"
+                            label="国家"
+                            width="130"
+                            :filters="countryFilters"
+                            :filter-method="filterCountry"
+                        />
+                        <el-table-column
                             prop="city"
                             label="城市"
-                            width="180"
+                            width="130"
                             :filters="cityFilters"
                             :filter-method="filterCity"
                         />
@@ -43,6 +50,7 @@
                         <el-table-column
                             prop="start_date"
                             label="发布日期"
+                            width="130"
                             sortable
                         >
                             <template #default="scope">
@@ -58,6 +66,7 @@
                         <el-table-column
                             prop="end_date"
                             label="截止日期"
+                            width="130"
                             sortable
                         >
                             <template #default="scope">
@@ -84,6 +93,7 @@ import dayjs from "dayjs";
 
 interface JobProps {
     title: string;
+    country: string;
     city: string;
     link: string;
 }
@@ -120,6 +130,16 @@ const onInput = () => {
         if (isLoading.value) return;
         onSearch();
     }, 1000);
+};
+const countryFilters = computed(() => {
+    const countries = jobs.value.map((job) => job.country);
+    return Array.from(new Set(countries)).map((country) => ({
+        text: country,
+        value: country
+    }));
+});
+const filterCountry = (filter: string, row: JobProps) => {
+    return row.country === filter;
 };
 
 const cityFilters = computed(() => {

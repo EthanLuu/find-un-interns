@@ -39,6 +39,7 @@ router.get('/jobs', async (ctx) => {
         const jobs = await Job.find({
             $or: [
                 { title: { $regex: searchKey, $options: 'i' } },
+                { country: { $regex: searchKey, $options: 'i' } },
                 { city: { $regex: searchKey, $options: 'i' } },
             ]
         })
