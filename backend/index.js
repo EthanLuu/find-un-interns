@@ -36,14 +36,20 @@ const Job = mongoose.model('jobs', jobSchema);
 router.get('/jobs', async (ctx) => {
     try {
         const searchKey = ctx.query.searchKey || '';
-        const jobs = await Job.find({
+        const page = parseInt(ctx.query.page) || 1; // 当前页数，默认为第一页
+        const limit = parseInt(ctx.query.limit) || 20; // 每页数据量，默认为 20
+        const skip = (page - 1) * limit; // 跳过的数据量
+        const query = {
             $or: [
                 { title: { $regex: searchKey, $options: 'i' } },
                 { country: { $regex: searchKey, $options: 'i' } },
                 { city: { $regex: searchKey, $options: 'i' } },
             ]
-        })
-        ctx.body = jobs;
+        }
+        const jobs = await Job.find(query).skip(skip).limit(limit);
+        ctx.body = {
+            data: jobs
+        };
     } catch (error) {
         ctx.status = 500;
         ctx.body = { error: 'Internal Server Error' };
