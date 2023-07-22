@@ -2,14 +2,20 @@
     <el-auto-resizer @scroll="onScroll">
         <template #default="{ height, width }">
             <el-table
-                v-loading="isLoading"
+                v-loading="loading"
                 :data="jobs"
                 :height="height"
                 :width="width"
+                :border="true"
                 ref="tableRef"
                 stripe
             >
-                <el-table-column prop="title" label="标题">
+                <el-table-column
+                    prop="title"
+                    label="标题"
+                    resizable
+                    min-width="300"
+                >
                     <template #default="scope">
                         <el-link :href="scope.row.link">
                             {{ scope.row.title }}
@@ -19,18 +25,24 @@
                 <el-table-column
                     prop="country"
                     label="国家"
-                    width="130"
+                    width="120"
                     :filters="countryFilters"
                     :filter-method="filterCountry"
+                    :show-overflow-tooltip="true"
                 />
                 <el-table-column
                     prop="city"
                     label="城市"
-                    width="130"
+                    width="100"
                     :filters="cityFilters"
                     :filter-method="filterCity"
+                    :show-overflow-tooltip="true"
                 />
-                <el-table-column prop="orgnization" label="组织" />
+                <el-table-column
+                    prop="orgnization"
+                    label="组织"
+                    :show-overflow-tooltip="true"
+                />
                 <el-table-column
                     prop="start_date"
                     label="发布日期"
@@ -60,21 +72,46 @@
             </el-table>
         </template>
     </el-auto-resizer>
+    <el-button
+        circle
+        size="large"
+        :icon="Top"
+        type="primary"
+        class="fixed bottom-20 right-8 z-10 overflow-hidden"
+        @click="scrollToTop"
+    >
+    </el-button>
+    <el-button
+        circle
+        size="large"
+        :icon="Bottom"
+        type="primary"
+        class="fixed bottom-8 right-8 z-10 overflow-hidden"
+        @click="scrollToBottom"
+    >
+    </el-button>
 </template>
 
 <script setup lang="ts">
 import dayjs from "dayjs";
+import { Bottom, Top } from "@element-plus/icons-vue";
 import { JobProps } from "./model";
 
-const props = defineProps<{ jobs: JobProps[]; isLoading: boolean }>();
-const emit = defineEmits(["load-more"]);
+const props = defineProps<{
+    jobs: JobProps[];
+    loading: boolean;
+    finished: boolean;
+}>();
+const emit = defineEmits(["load-more", "load-all"]);
 
 const countryFilters = computed(() => {
     const countries = props.jobs.map((job) => job.country);
-    return Array.from(new Set(countries)).map((country) => ({
-        text: country,
-        value: country
-    }));
+    return Array.from(new Set(countries))
+        .map((country) => ({
+            text: country,
+            value: country
+        }))
+        .sort((x, y) => (x.text > y.text ? 1 : -1));
 });
 const filterCountry = (filter: string, row: JobProps) => {
     return row.country === filter;
@@ -82,10 +119,12 @@ const filterCountry = (filter: string, row: JobProps) => {
 
 const cityFilters = computed(() => {
     const cities = props.jobs.map((job) => job.city);
-    return Array.from(new Set(cities)).map((city) => ({
-        text: city,
-        value: city
-    }));
+    return Array.from(new Set(cities))
+        .map((city) => ({
+            text: city,
+            value: city
+        }))
+        .sort((x, y) => (x.text > y.text ? 1 : -1));
 });
 const filterCity = (filter: string, row: JobProps) => {
     return row.city === filter;
@@ -93,16 +132,16 @@ const filterCity = (filter: string, row: JobProps) => {
 
 const tableRef = ref<any>(null);
 
-const load = () => {
-    if (props.isLoading) return;
+const loadMore = () => {
+    if (props.loading) return;
     emit("load-more");
-    console.log("load-more");
 };
 
 // throttle
 let lastLoad = performance.now();
 let scrollTimer: number;
-const timeout = 1000;
+const diff = 1200; // when to start loading
+const timeout = 300;
 const onScroll = (event: Event) => {
     if (scrollTimer) return;
     scrollTimer = requestAnimationFrame(() => {
@@ -112,14 +151,37 @@ const onScroll = (event: Event) => {
             if (!target) return;
             const element = target as HTMLElement;
             const { clientHeight, scrollTop, scrollHeight } = element;
-            const diff = 800;
-            if (clientHeight + scrollTop + diff >= scrollHeight) {
-                load();
+            if (
+                clientHeight + scrollTop + diff >= scrollHeight ||
+                scrollHeight === clientHeight
+            ) {
+                loadMore();
             }
             lastLoad = now;
         }
         scrollTimer = 0;
     });
+};
+
+const scrollToTop = () => {
+    tableRef.value.setScrollTop(0);
+};
+
+const scrollToBottom = () => {
+    const { tableBody } = tableRef.value.$refs;
+    if (props.finished) {
+        tableRef.value.setScrollTop(tableBody.clientHeight);
+    }
+    emit("load-all");
+    watch(
+        () => props.loading,
+        () => {
+            if (props.loading) return;
+            requestAnimationFrame(() => {
+                tableRef.value.setScrollTop(tableBody.clientHeight);
+            });
+        }
+    );
 };
 
 onMounted(() => {

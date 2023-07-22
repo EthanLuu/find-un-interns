@@ -46,10 +46,79 @@ router.get('/jobs', async (ctx) => {
                 { city: { $regex: searchKey, $options: 'i' } },
             ]
         }
-        const jobs = await Job.find(query).skip(skip).limit(limit);
+        let jobs;
+        if (ctx.query.all) {
+            jobs = await Job.find(query).sort({ start_date: 'desc' });
+        } else {
+            jobs = await Job.find(query).sort({ start_date: 'desc' }).skip(skip).limit(limit);
+        }
+        ctx.body = jobs;
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = { error: 'Internal Server Error' };
+    }
+});
+
+// 定义路由
+router.get('/statistics', async (ctx) => {
+    try {
+        const availableJobs = await Job.find({ end_date: { $gte: new Date() } });
+        const yesterDay = new Date();
+        yesterDay.setDate(yesterDay.getDate() - 2);
+        yesterDay.setHours(0, 0, 0, 0);
+        const yesterJobs = await Job.find({ start_date: { $gte: yesterDay, $lt: new Date() } });
+        const hotOrganization = await Job.aggregate([
+            {
+                $group: {
+                    _id: '$orgnization',
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { count: -1 }
+            },
+            {
+                $limit: 1
+            }
+        ]);
+
+        const hotJob = await Job.aggregate([
+            {
+                $group: {
+                    _id: '$title',
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { count: -1 }
+            },
+            {
+                $limit: 1
+            }
+        ]);
+
         ctx.body = {
-            data: jobs
+            availableJobs: availableJobs.length,
+            yesterJobs: yesterJobs.length,
+            hotOrganization: {
+                name: hotOrganization[0]._id,
+                count: hotOrganization[0].count
+            },
+            hotJob: {
+                name: hotJob[0]._id,
+                count: hotJob[0].count
+            }
         };
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = { error: 'Internal Server Error' };
+    }
+});
+
+router.get('/carousels', async (ctx) => {
+    try {
+        const jobs = await Job.find().sort({ start_date: 'desc' }).limit(6);
+        ctx.body = jobs;
     } catch (error) {
         ctx.status = 500;
         ctx.body = { error: 'Internal Server Error' };

@@ -3,4 +3,5 @@ export interface JobProps {
     country: string;
     city: string;
     link: string;
+    orgnization: string;
 }
