@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAxios } from "./utils/api";
+import { useAxios } from "./server/axios";
 const config = useRuntimeConfig();
 const baseUrl = config.public.BASE_URL as string;
 const { init: initAxios } = useAxios();

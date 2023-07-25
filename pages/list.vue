@@ -1,7 +1,6 @@
 <template>
-    <el-container direction="vertical" style="height: 100vh">
-        <PageHeader />
-        <el-main class="main">
+    <NuxtLayout>
+        <el-main class="main w-full" style="padding: 0">
             <JobTable
                 :loading="loading"
                 :jobs="jobs"
@@ -10,13 +9,13 @@
                 @load-all="loadAll"
             />
         </el-main>
-    </el-container>
+    </NuxtLayout>
 </template>
 
 <script setup lang="tsx">
 import { ref } from "vue";
 import { JobProps } from "../components/model";
-import { useAxios } from "../utils/api";
+import { useAxios } from "../server/axios";
 
 const { instance: axios } = useAxios();
 const jobs = ref<JobProps[]>([]);
@@ -77,11 +76,6 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.main {
-    display: flex;
-    padding: 0;
-}
-
 .table-wrapper {
     flex: 1;
 }

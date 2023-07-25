@@ -18,34 +18,38 @@
             :span="12"
             :sm="6"
         >
-            <el-card shadow="hover">
-                <el-statistic :value="statistics.hotOrganization?.count">
-                    <template #title>
-                        <span
-                            class="whitespace-nowrap overflow-hidden text-ellipsis block"
-                        >
-                            {{ `热门组织  ${hotOrgName}` }}
-                        </span>
-                    </template>
-                </el-statistic>
-            </el-card>
+            <el-tooltip :content="hotOrgName" placement="top">
+                <el-card shadow="hover">
+                    <el-statistic :value="statistics.hotOrganization?.count">
+                        <template #title>
+                            <span
+                                class="whitespace-nowrap overflow-hidden text-ellipsis block"
+                            >
+                                {{ `热门组织  ${hotOrgName}` }}
+                            </span>
+                        </template>
+                    </el-statistic>
+                </el-card>
+            </el-tooltip>
         </el-col>
         <el-col
             class="flex justify-center flex-col mt-3 md:mt-0"
             :span="12"
             :sm="6"
         >
-            <el-card shadow="hover">
-                <el-statistic :value="statistics.hotJob?.count">
-                    <template #title>
-                        <span
-                            class="whitespace-nowrap overflow-hidden text-ellipsis block"
-                        >
-                            {{ `热门岗位 ${hotJobName}` }}
-                        </span>
-                    </template>
-                </el-statistic>
-            </el-card>
+            <el-tooltip :content="hotJobName" placement="top">
+                <el-card shadow="hover">
+                    <el-statistic :value="statistics.hotJob?.count">
+                        <template #title>
+                            <span
+                                class="whitespace-nowrap overflow-hidden text-ellipsis block"
+                            >
+                                {{ `热门岗位 ${hotJobName}` }}
+                            </span>
+                        </template>
+                    </el-statistic>
+                </el-card>
+            </el-tooltip>
         </el-col>
     </el-row>
 </template>

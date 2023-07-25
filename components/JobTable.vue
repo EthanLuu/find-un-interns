@@ -17,9 +17,12 @@
                     min-width="300"
                 >
                     <template #default="scope">
-                        <el-link :href="scope.row.link">
+                        <NuxtLink
+                            class="text-blue-500 hover:underline font-semibold"
+                            :href="`/detail/${scope.row._id}`"
+                        >
                             {{ scope.row.title }}
-                        </el-link>
+                        </NuxtLink>
                     </template>
                 </el-table-column>
                 <el-table-column

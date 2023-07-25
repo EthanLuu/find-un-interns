@@ -11,6 +11,10 @@ export default defineNuxtConfig({
             BASE_URL: process.env.BASE_URL
         }
     },
+    ssr: true,
+    routeRules: {
+        "/list": { ssr: false }
+    },
     devtools: { enabled: true },
     modules: ["@element-plus/nuxt", "@nuxtjs/tailwindcss"],
     css: ["@/assets/style/global.scss"],

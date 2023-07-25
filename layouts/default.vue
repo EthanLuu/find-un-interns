@@ -1,0 +1,13 @@
+<template>
+    <el-container
+        direction="vertical"
+        style="height: 100vh; align-items: center"
+    >
+        <PageHeader />
+        <slot></slot>
+    </el-container>
+</template>
+
+<script setup lang="ts"></script>
+
+<style scoped lang="scss"></style>

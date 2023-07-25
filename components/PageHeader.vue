@@ -1,5 +1,5 @@
 <template>
-    <el-header class="header">
+    <el-header class="header bg-white">
         <NuxtLink to="/" class="h-full flex justify-center items-center blue">
             <el-icon size="20" style="margin: 0"><Opportunity /></el-icon>
             <h1 class="text-xl">UNiQ</h1>
@@ -12,15 +12,13 @@
             class="h-full"
         >
             <el-menu-item index="/" style="padding: 0">
-                <NuxtLink class="w-full px-4 flex items-center" to="/">
-                    <el-icon size="20" style="margin: 0"><House /></el-icon>
+                <NuxtLink class="w-full px-8 flex items-center" to="/">
                     <span> 首页 </span>
                 </NuxtLink>
             </el-menu-item>
             <el-menu-item index="/list" style="padding: 0">
-                <NuxtLink class="w-full px-4 flex items-center" to="/list">
-                    <el-icon size="20" style="margin: 0"><Memo /></el-icon>
-                    <span> 列表 </span>
+                <NuxtLink class="w-full px-8 flex items-center" to="/list">
+                    <span> 职位 </span>
                 </NuxtLink>
             </el-menu-item>
         </el-menu>
@@ -30,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { Opportunity, House, Memo } from "@element-plus/icons-vue";
+import { Opportunity } from "@element-plus/icons-vue";
 const route = useRoute();
 </script>
 
@@ -39,7 +37,10 @@ const route = useRoute();
     color: #409eff;
 }
 .header {
-    position: relative;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
     display: flex;
     justify-content: flex-start;
     align-items: center;

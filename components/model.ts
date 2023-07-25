@@ -1,4 +1,5 @@
 export interface JobProps {
+    _id: string;
     title: string;
     country: string;
     city: string;
