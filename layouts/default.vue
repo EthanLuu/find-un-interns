@@ -3,7 +3,7 @@
         direction="vertical"
         style="height: 100vh; align-items: center"
     >
-        <PageHeader />
+        <CommonHeader />
         <slot></slot>
     </el-container>
 </template>

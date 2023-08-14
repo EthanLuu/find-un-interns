@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { JobProps } from "./model";
-defineProps<{ loading: boolean; carousels: JobProps[] }>();
+defineProps<{ loading?: boolean; carousels: JobProps[] }>();
 </script>
 
 <style scoped lang="scss">

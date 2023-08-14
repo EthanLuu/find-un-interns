@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 
 const app = new Koa();
 const router = new Router();
+const { ObjectId } = mongoose.Types;
 
 // 连接 MongoDB 数据库
 mongoose.connect(process.env.MONGO_URL, {
@@ -32,7 +33,6 @@ const jobSchema = new mongoose.Schema({
 
 const Job = mongoose.model('jobs', jobSchema);
 
-// 定义路由
 router.get('/jobs', async (ctx) => {
     try {
         const searchKey = ctx.query.searchKey || '';
@@ -59,7 +59,17 @@ router.get('/jobs', async (ctx) => {
     }
 });
 
-// 定义路由
+router.get('/jobs/:id', async (ctx) => {
+    try {
+        const id = ctx.params.id;
+        const job = await Job.findById(id);
+        ctx.body = job;
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = { error: 'Internal Server Error' };
+    }
+});
+
 router.get('/statistics', async (ctx) => {
     try {
         const availableJobs = await Job.find({ end_date: { $gte: new Date() } });
@@ -124,6 +134,27 @@ router.get('/carousels', async (ctx) => {
         ctx.body = { error: 'Internal Server Error' };
     }
 });
+
+const DetailSchema = new mongoose.Schema({
+    jobId: ObjectId,
+    raw: String,
+    summary: String,
+    tags: [String]
+})
+
+const Detail = mongoose.model('details', DetailSchema);
+
+router.get('/details/:id', async (ctx) => {
+    try {
+        const id = ctx.params.id;
+        const detail = await Detail.findOne({ jobId: new ObjectId(id) })
+        ctx.body = detail;
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = { error: 'Internal Server Error' };
+    }
+});
+
 
 app.use(cors());
 

@@ -1,5 +1,10 @@
 <template>
-    <el-row justify="center" align="middle" v-loading="loading" :gutter="12">
+    <el-row
+        justify="center"
+        align="middle"
+        v-loading="loading || false"
+        :gutter="12"
+    >
         <el-col class="flex justify-center" :span="12" :sm="6">
             <el-card shadow="hover">
                 <el-statistic
@@ -63,7 +68,7 @@ type StatisticProp = {
     hotJob: { name: string; count: number };
 };
 
-const props = defineProps<{ statistics: StatisticProp; loading: boolean }>();
+const props = defineProps<{ statistics: StatisticProp; loading?: boolean }>();
 const hotOrgName = computed(() => {
     if (!props.statistics.hotOrganization) return "";
     return props.statistics.hotOrganization?.name.replace(/\(.*?\)/g, "");

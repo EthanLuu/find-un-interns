@@ -32,8 +32,9 @@ watch(
 
 const page = ref(1);
 const onSearch = async (searchKey: string) => {
-    page.value = 1;
+    finished.value = false;
     loading.value = false;
+    page.value = 1;
     jobs.value = [];
     await loadMore(searchKey);
     await loadMore(searchKey);
@@ -71,7 +72,8 @@ const loadAll = async () => {
 };
 
 onMounted(() => {
-    onSearch("");
+    console.log(route.query.searchKey);
+    onSearch((route.query.searchKey as string) || "");
 });
 </script>
 

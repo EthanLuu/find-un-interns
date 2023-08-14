@@ -9,10 +9,7 @@
                                 数据统计
                             </h3>
                         </template>
-                        <HomeStatistics
-                            :loading="loadingStatistics"
-                            :statistics="statistics"
-                        />
+                        <HomeStatistics :statistics="statistics" />
                     </el-card>
 
                     <el-card>
@@ -21,10 +18,7 @@
                                 最新岗位
                             </h3>
                         </template>
-                        <HomeCarousel
-                            :loading="loadingCarousels"
-                            :carousels="carousels"
-                        />
+                        <HomeCarousel :carousels="carousels" />
                     </el-card>
                 </div>
             </div>
@@ -33,28 +27,8 @@
 </template>
 
 <script setup lang="ts">
-const statistics = ref<any>({});
-const loadingStatistics = ref(true);
-
-const loadStatistics = async () => {
-    const data = await $fetch("/api/statistics");
-    statistics.value = data;
-    loadingStatistics.value = false;
-};
-
-const carousels = ref<any>([]);
-const loadingCarousels = ref(true);
-
-const loadCarousels = async () => {
-    const data = await $fetch("/api/carousels");
-    carousels.value = data;
-    loadingCarousels.value = false;
-};
-
-onMounted(() => {
-    loadStatistics();
-    loadCarousels();
-});
+const { data: statistics } = await useFetch("/api/statistics");
+const { data: carousels } = await useFetch("/api/carousels");
 </script>
 
 <style scoped lang="scss">

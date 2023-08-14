@@ -102,7 +102,7 @@ import { JobProps } from "./model";
 
 const props = defineProps<{
     jobs: JobProps[];
-    loading: boolean;
+    loading?: boolean;
     finished: boolean;
 }>();
 const emit = defineEmits(["load-more", "load-all"]);
