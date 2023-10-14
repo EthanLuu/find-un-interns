@@ -5,4 +5,5 @@ export interface JobProps {
     city: string;
     link: string;
     orgnization: string;
+    start_date: string;
 }

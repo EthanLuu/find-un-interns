@@ -1,7 +1,13 @@
 body {
-    background: #f6f6f6;
+    background: #f5f5f7;
 }
 
 header + main {
     margin-top: 60px;
+}
+
+.el-card__header {
+    font-weight: 600;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
 }

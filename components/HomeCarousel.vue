@@ -1,23 +1,26 @@
 <template>
-    <div class="text-center overflow-hidden rounded-lg">
-        <el-carousel height="250px">
+    <div class="text-center rounded-lg w-full">
+        <el-carousel type="card" class="py-2">
             <el-carousel-item
                 v-for="item in carousels"
                 :key="item.title"
                 v-loading="loading"
-                class="py-12 px-12"
+                class="px-12 rounded-lg shadow-md"
             >
+                <div class="py-2 text-gray-800 font-semibold">
+                    {{ getDateString(item) }}
+                </div>
                 <h3
-                    class="text-center text-xl"
+                    class="text-xl"
                     v-if="item.city.trim() && item.country.trim()"
                 >
                     {{ `${item.city}, ${item.country}` }}
                 </h3>
-                <h3 class="text-center font-bold text-2xl py-2 text-gray-800">
+                <h3 class="text-left font-bold text-2xl text-gray-900">
                     {{ item.title }}
                 </h3>
                 <h3
-                    class="text-center text-xl opacity-90"
+                    class="text-left text-xl opacity-90"
                     v-if="item.orgnization"
                 >
                     {{ item.orgnization }}
@@ -30,20 +33,24 @@
 <script setup lang="ts">
 import { JobProps } from "./model";
 defineProps<{ loading?: boolean; carousels: JobProps[] }>();
+const getDateString = (item: JobProps) => {
+    const date = new Date(item.start_date);
+    return date.toLocaleDateString();
+};
 </script>
 
 <style scoped lang="scss">
 .el-carousel__item {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     color: #475669;
     &:nth-child(2n) {
-        background-color: rgba(185, 212, 250, 0.5);
+        background-color: rgb(220, 234, 255);
     }
     &:nth-child(2n + 1) {
-        background-color: rgba(195, 202, 255, 0.5);
+        background-color: rgb(225, 229, 255);
     }
 }
 </style>

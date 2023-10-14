@@ -28,15 +28,17 @@
                     </el-row>
                 </el-card>
                 <el-card>
-                    
-                    <el-tabs v-model="activeTabName">
-                        <el-tab-pane label="GPT" name="summary">
-                            {{ detailInfo.summary }}
-                        </el-tab-pane>
-                        <el-tab-pane label="原始" name="raw">
-                            {{ detailInfo.raw }}
-                        </el-tab-pane>
-                    </el-tabs>
+                    <template #header>
+                        <div class="flex justify-between">
+                            <span> 岗位介绍 </span>
+                            <ElButton type="text" @click="toggleJobDesc">
+                                {{ showRaw ? "切换GPT总结" : "切换原始" }}
+                            </ElButton>
+                        </div>
+                    </template>
+                    <ElText class="whitespace-pre-line" size="large">
+                        {{ showRaw ? detailInfo.raw : detailInfo.summary }}
+                    </ElText>
                 </el-card>
             </div>
         </el-main>
@@ -54,7 +56,8 @@ const goBack = () => {
     router.back();
 };
 
-const activeTabName = ref("summary");
+const showRaw = ref(false);
+const toggleJobDesc = () => (showRaw.value = !showRaw.value);
 </script>
 
 <style lang="scss" scoped>

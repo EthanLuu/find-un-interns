@@ -125,7 +125,7 @@ router.get('/statistics', async (ctx) => {
     }
 });
 
-router.get('/carousels', async (ctx) => {
+router.get('/latest', async (ctx) => {
     try {
         const jobs = await Job.find().sort({ start_date: 'desc' }).limit(6);
         ctx.body = jobs;
@@ -134,6 +134,7 @@ router.get('/carousels', async (ctx) => {
         ctx.body = { error: 'Internal Server Error' };
     }
 });
+
 
 const DetailSchema = new mongoose.Schema({
     jobId: ObjectId,
