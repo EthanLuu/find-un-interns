@@ -64,10 +64,10 @@
         <el-card>
           <h3 class="text-xl font-bold">岗位介绍</h3>
           <el-collapse v-model="activeItem" class="my-2">
-            <el-collapse-item title="GPT总结" name="gpt">
+            <el-collapse-item title="GPT总结" name="gpt" class=" whitespace-pre-line">
               {{ detailInfo?.summary }}
             </el-collapse-item>
-            <el-collapse-item title="原始文本" name="raw">
+            <el-collapse-item title="原始文本" name="raw" class=" whitespace-pre-line">
               {{ detailInfo?.raw }}
             </el-collapse-item>
           </el-collapse>
@@ -94,6 +94,11 @@ const activeItem = ref('gpt')
 </script>
 
 <style lang="scss" scoped>
+:root {
+  --el-collapse-header-font-size: 14px;
+  --el-collapse-content-font-size: 14px;
+}
+
 .page-header {
   overflow: hidden;
   white-space: nowrap;

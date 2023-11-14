@@ -1,3 +1,7 @@
+.el-collapse-item {
+    --el-collapse-header-font-size: 16px;
+    --el-collapse-content-font-size: 14px;
+}
 body {
     background: #f5f5f7;
 }
@@ -10,4 +14,11 @@ header + main {
     font-weight: 600;
     font-size: 1.875rem;
     line-height: 2.25rem;
+}
+
+.max-row-2 {
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
