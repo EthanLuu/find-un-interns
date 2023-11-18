@@ -1,111 +1,54 @@
 <template>
     <el-auto-resizer @scroll="onScroll">
         <template #default="{ height, width }">
-            <el-table
-                v-loading="loading"
-                :data="jobs"
-                :height="height"
-                :width="width"
-                :border="true"
-                ref="tableRef"
-                stripe
-            >
-                <el-table-column
-                    prop="title"
-                    label="标题"
-                    resizable
-                    min-width="300"
-                >
+            <el-table v-loading="loading" :data="jobs" :height="height" :width="width" :border="true" ref="tableRef" stripe>
+                <el-table-column prop="title" label="标题" resizable min-width="300" max-width="800"
+                    :show-overflow-tooltip="true">
                     <template #default="scope">
-                        <NuxtLink
-                            class="text-blue-500 hover:underline font-semibold"
-                            :href="`/detail/${scope.row._id}`"
-                        >
+                        <NuxtLink class="whitespace-nowrap text-blue-500 hover:underline font-semibold"
+                            :href="`/detail/${scope.row._id}`">
                             {{ scope.row.title }}
                         </NuxtLink>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="country"
-                    label="国家"
-                    width="120"
-                    :filters="countryFilters"
-                    :filter-method="filterCountry"
-                    :show-overflow-tooltip="true"
-                />
-                <el-table-column
-                    prop="city"
-                    label="城市"
-                    width="100"
-                    :filters="cityFilters"
-                    :filter-method="filterCity"
-                    :show-overflow-tooltip="true"
-                />
-                <el-table-column
-                    prop="orgnization"
-                    label="组织"
-                    :show-overflow-tooltip="true"
-                />
-                <el-table-column
-                    prop="start_date"
-                    label="发布日期"
-                    width="130"
-                    sortable
-                >
+                <el-table-column prop="country" label="国家" width="120" :filters="countryFilters"
+                    :filter-method="filterCountry" :show-overflow-tooltip="true" />
+                <el-table-column prop="city" label="城市" width="100" :filters="cityFilters" :filter-method="filterCity"
+                    :show-overflow-tooltip="true" />
+                <el-table-column prop="orgnization" label="组织" :show-overflow-tooltip="true" />
+                <el-table-column prop="start_date" label="发布日期" width="130" sortable>
                     <template #default="scope">
-                        <div>
-                            {{
-                                dayjs(scope.row.start_date).format("YYYY-MM-DD")
-                            }}
-                        </div>
+                        {{ scope.row.end_date ? dayjs(scope.row.start_date).format("YYYY-MM-DD") : '-' }}
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="end_date"
-                    label="截止日期"
-                    width="130"
-                    sortable
-                >
+                <el-table-column prop="end_date" label="截止日期" width="130" sortable>
                     <template #default="scope">
-                        <div>
-                            {{ dayjs(scope.row.end_date).format("YYYY-MM-DD") }}
-                        </div>
+                        {{ scope.row.end_date ? dayjs(scope.row.end_date).format("YYYY-MM-DD") : '-' }}
                     </template>
                 </el-table-column>
             </el-table>
         </template>
     </el-auto-resizer>
-    <el-button
-        circle
-        size="large"
-        :icon="Top"
-        type="primary"
-        class="fixed bottom-20 right-8 z-10 overflow-hidden"
-        @click="scrollToTop"
-    >
+    <el-button :class="{ visible: showTopButton }" circle size="large" :icon="Top" type="primary"
+        class="transition-opacity fixed bottom-20 right-8 z-10 overflow-hidden opacity-0" @click="scrollToTop">
     </el-button>
-    <el-button
-        circle
-        size="large"
-        :icon="Bottom"
-        type="primary"
-        class="fixed bottom-8 right-8 z-10 overflow-hidden"
-        @click="scrollToBottom"
-    >
+    <el-button circle size="large" :icon="Bottom" type="primary" class="fixed bottom-8 right-8 z-10 overflow-hidden"
+        @click="scrollToBottom">
     </el-button>
 </template>
 
 <script setup lang="ts">
 import dayjs from "dayjs";
 import { Bottom, Top } from "@element-plus/icons-vue";
-import { JobProps } from "./model";
+import { JobInfo } from "./model";
 
 const props = defineProps<{
-    jobs: JobProps[];
+    jobs: JobInfo[];
     loading?: boolean;
     finished: boolean;
 }>();
 const emit = defineEmits(["load-more", "load-all"]);
+const showTopButton = ref(false)
 
 const countryFilters = computed(() => {
     const countries = props.jobs.map((job) => job.country);
@@ -116,7 +59,7 @@ const countryFilters = computed(() => {
         }))
         .sort((x, y) => (x.text > y.text ? 1 : -1));
 });
-const filterCountry = (filter: string, row: JobProps) => {
+const filterCountry = (filter: string, row: JobInfo) => {
     return row.country === filter;
 };
 
@@ -129,7 +72,7 @@ const cityFilters = computed(() => {
         }))
         .sort((x, y) => (x.text > y.text ? 1 : -1));
 });
-const filterCity = (filter: string, row: JobProps) => {
+const filterCity = (filter: string, row: JobInfo) => {
     return row.city === filter;
 };
 
@@ -154,6 +97,7 @@ const onScroll = (event: Event) => {
             if (!target) return;
             const element = target as HTMLElement;
             const { clientHeight, scrollTop, scrollHeight } = element;
+            showTopButton.value = scrollTop > 2
             if (
                 clientHeight + scrollTop + diff >= scrollHeight ||
                 scrollHeight === clientHeight
@@ -187,9 +131,18 @@ const scrollToBottom = () => {
     );
 };
 
+const tableScrollWrapper = ref(null)
+
 onMounted(() => {
     const scorllBarRef = tableRef.value.scrollBarRef;
     const wrap = scorllBarRef.wrapRef;
     wrap.addEventListener("scroll", onScroll);
+    tableScrollWrapper.value = wrap
 });
 </script>
+
+<style lang="scss" scoped>
+.visible {
+    opacity: 1;
+}
+</style>
