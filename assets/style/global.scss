@@ -16,6 +16,10 @@ header + main {
     line-height: 2.25rem;
 }
 
+.el-scrollbar__wrap {
+    overscroll-behavior: contain;
+}
+
 .max-row-2 {
     -webkit-line-clamp: 2;
     overflow: hidden;

@@ -1,11 +1,9 @@
 <template>
-    <el-container
-        direction="vertical"
-        style="height: 100vh; align-items: center"
-    >
-        <CommonHeader />
-        <slot></slot>
-    </el-container>
+  <el-container direction="vertical" style="align-items: center; min-height: 100vh">
+    <CommonHeader />
+    <slot></slot>
+    <CommonFooter />
+  </el-container>
 </template>
 
 <script setup lang="ts"></script>

@@ -1,49 +1,38 @@
 <template>
-    <el-header class="header bg-white">
-        <div
-            class="max-w-screen-lg flex justify-between flex-1 items-center gap-6"
-        >
-            <NuxtLink
-                to="/"
-                class="h-full flex justify-center items-center blue"
-            >
-                <el-icon size="20" style="margin: 0"><Opportunity /></el-icon>
-                <h1 class="text-xl">UNiQ</h1>
-            </NuxtLink>
-            <el-menu
-                :default-active="route.path"
-                mode="horizontal"
-                :ellipsis="false"
-                style="border-bottom: 0"
-                class="h-full"
-            >
-                <el-menu-item index="/" style="padding: 0">
-                    <NuxtLink class="w-full px-4 flex items-center" to="/">
-                        <span> 首页 </span>
-                    </NuxtLink>
-                </el-menu-item>
-                <el-menu-item index="/list" style="padding: 0">
-                    <NuxtLink class="w-full px-4 flex items-center" to="/list">
-                        <span> 职位 </span>
-                    </NuxtLink>
-                </el-menu-item>
-            </el-menu>
-            <div class="flex-1"></div>
-            <GlobalSearch />
-        </div>
-    </el-header>
+  <el-header class="header bg-white">
+    <div class="max-w-screen-lg flex justify-between flex-1 items-center gap-6">
+      <NuxtLink to="/" class="h-full flex justify-center items-center blue">
+        <el-icon size="20" style="margin: 0"><Opportunity /></el-icon>
+        <h1 class="text-xl">UNiQ</h1>
+      </NuxtLink>
+      <el-menu :default-active="route.path" mode="horizontal" :ellipsis="false" style="border-bottom: 0" class="h-full">
+        <el-menu-item index="/" style="padding: 0">
+          <NuxtLink class="w-full px-4 flex items-center" to="/">
+            <span>首页</span>
+          </NuxtLink>
+        </el-menu-item>
+        <el-menu-item index="/list" style="padding: 0">
+          <NuxtLink class="w-full px-4 flex items-center" to="/list">
+            <span>职位</span>
+          </NuxtLink>
+        </el-menu-item>
+      </el-menu>
+      <div class="flex-1"></div>
+      <GlobalSearch />
+    </div>
+  </el-header>
 </template>
 
 <script setup lang="ts">
-import { Opportunity } from "@element-plus/icons-vue";
-const route = useRoute();
+  import { Opportunity } from '@element-plus/icons-vue'
+  const route = useRoute()
 </script>
 
 <style scoped lang="scss">
-.blue {
+  .blue {
     color: #409eff;
-}
-.header {
+  }
+  .header {
     width: 100%;
     position: fixed;
     left: 0;
@@ -54,5 +43,5 @@ const route = useRoute();
     z-index: 2;
     gap: 24px;
     white-space: nowrap;
-}
+  }
 </style>

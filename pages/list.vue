@@ -1,6 +1,6 @@
 <template>
     <NuxtLayout>
-        <el-main class="main w-full" style="padding: 0">
+        <el-main class="main w-full max-w-screen-lg" style="padding: 0; height: calc(100vh - 140px);">
             <JobTable :loading="loading" :jobs="jobs" :finished="finished" @load-more="loadMore" @load-all="loadAll" />
         </el-main>
     </NuxtLayout>
@@ -8,7 +8,7 @@
 
 <script setup lang="tsx">
 import { ref } from 'vue'
-import { JobInfo } from '../components/model'
+import type { JobInfo } from '../components/model'
 import { useAxios } from '../server/axios'
 
 const { instance: axios } = useAxios()
