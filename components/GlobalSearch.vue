@@ -2,7 +2,7 @@
   <el-input
     v-model="searchValue"
     class="search-bar"
-    placeholder="请输入搜索关键词"
+    placeholder="请输入关键词"
     autofocus
     clearable
     :prefix-icon="Search"

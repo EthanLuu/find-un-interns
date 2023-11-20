@@ -18,14 +18,25 @@
         </el-menu-item>
       </el-menu>
       <div class="flex-1"></div>
-      <GlobalSearch />
+      <div class="flex justify-center items-center">
+        <GlobalSearch />
+        <AvatarMenu class="ml-4" v-if="isLogin"></AvatarMenu>
+        <div class="ml-4 flex gap-4" v-else>
+          <NuxtLink to="/login" class="text-sm hover:text-blue-500">登录</NuxtLink>
+          <NuxtLink to="/register" class="text-sm hover:text-blue-500">注册</NuxtLink>
+        </div>
+      </div>
     </div>
   </el-header>
 </template>
 
 <script setup lang="ts">
   import { Opportunity } from '@element-plus/icons-vue'
+  import { useUserStore } from '~/store/user'
   const route = useRoute()
+  const userStore = useUserStore()
+
+  const isLogin = computed(() => userStore.username !== '')
 </script>
 
 <style scoped lang="scss">

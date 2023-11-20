@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 const jobSchema = new mongoose.Schema({
   link: String,
   title: String,
@@ -9,4 +8,4 @@ const jobSchema = new mongoose.Schema({
   end_date: Date,
 })
 
-export const Job = mongoose.model('jobs', jobSchema)
+module.exports = mongoose.model('jobs', jobSchema)

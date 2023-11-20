@@ -1,13 +1,7 @@
 <template>
-    <NuxtPage />
+  <NuxtPage />
 </template>
 
-<script setup lang="ts">
-import { useAxios } from "./server/axios";
-const config = useRuntimeConfig();
-const baseUrl = config.public.BASE_URL as string;
-const { init: initAxios } = useAxios();
-initAxios(baseUrl);
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss"></style>
