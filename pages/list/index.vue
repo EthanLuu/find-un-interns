@@ -1,9 +1,7 @@
 <template>
-  <NuxtLayout>
-    <el-main class="main w-full max-w-screen-lg" style="padding: 0; height: calc(100vh - 140px)">
-      <JobTable :loading="loading" :jobs="jobs" :finished="finished" @load-more="loadMore" @load-all="loadAll" />
-    </el-main>
-  </NuxtLayout>
+  <el-main class="main w-full max-w-screen-lg" style="padding: 0; height: calc(100vh - 140px)">
+    <JobTable :loading="loading" :jobs="jobs" :finished="finished" @load-more="loadMore" @load-all="loadAll" />
+  </el-main>
 </template>
 
 <script setup lang="ts">
