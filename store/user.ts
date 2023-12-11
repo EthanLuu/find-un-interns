@@ -34,6 +34,8 @@ export const useUserStore = defineStore('user', () => {
   const logout = () => {
     removeToken()
     axios.value.defaults.headers.common['Authorization'] = ''
+    username.value = ''
+    avatar.value = ''
     token.value = ''
   }
 
@@ -50,10 +52,14 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const getUserInfo = async () => {
-    axios.value.defaults.headers.common['Authorization'] = token.value
-    const { data } = await axios.value.post(`/user/userinfo`)
-    username.value = data.user.username
-    avatar.value = data.user.avatar
+    try {
+      axios.value.defaults.headers.common['Authorization'] = token.value
+      const { data } = await axios.value.post(`/user/userinfo`)
+      username.value = data.user.username
+      avatar.value = data.user.avatar
+    } catch (error) {
+      logout()
+    }
   }
   return { token, username, avatar, login, logout, register, getUserInfo }
 })

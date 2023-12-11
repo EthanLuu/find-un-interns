@@ -41,7 +41,7 @@
   const route = useRoute()
   const userStore = useUserStore()
 
-  const isLogin = computed(() => userStore.username !== '')
+  const isLogin = computed(() => userStore.token !== '')
 </script>
 
 <style scoped lang="scss">
