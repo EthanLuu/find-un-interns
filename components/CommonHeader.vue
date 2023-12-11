@@ -16,6 +16,11 @@
             <span>职位</span>
           </NuxtLink>
         </el-menu-item>
+        <el-menu-item index="/motivate" style="padding: 0">
+          <NuxtLink class="w-full px-4 flex items-center" to="/motivate">
+            <span>GPT</span>
+          </NuxtLink>
+        </el-menu-item>
       </el-menu>
       <div class="flex-1"></div>
       <div class="flex justify-center items-center">

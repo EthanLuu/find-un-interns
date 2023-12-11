@@ -45,6 +45,10 @@ const jobController = {
       const yesterJobs = await Job.find({ start_date: { $gte: yesterDay, $lt: new Date() } })
       const hotOrganization = await Job.aggregate([
         {
+          // end_date 在今天之后的
+          $match: { end_date: { $gte: new Date() } },
+        },
+        {
           $group: {
             _id: '$orgnization',
             count: { $sum: 1 },
@@ -59,6 +63,10 @@ const jobController = {
       ])
 
       const hotJob = await Job.aggregate([
+        {
+          // end_date 在今天之后的
+          $match: { end_date: { $gte: new Date() } },
+        },
         {
           $group: {
             _id: '$title',

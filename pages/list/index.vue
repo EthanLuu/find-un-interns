@@ -6,9 +6,9 @@
   </NuxtLayout>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
   import { ref } from 'vue'
-  import type { JobInfo } from '../components/model'
+  import type { JobInfo } from '../../components/model'
 
   const axios = useAxios()
   const jobs = ref<JobInfo[]>([])
