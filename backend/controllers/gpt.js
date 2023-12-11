@@ -17,11 +17,11 @@ if (process.env.PROXY) {
 const gptController = {
   generateMotivationLetter: async (ctx) => {
     try {
-      const { cv, jobDescription } = ctx.request.body
+      const { cv, jobDescription, template } = ctx.request.body
 
       const systemPrompt = `You are a helpful intern application assistant. 
       Users will share their cv and the job description and you will help them 
-      write a motivation letter.`
+      write a motivation letter based on this template: ${template}`
 
       const res = await openai.chat.completions.create({
         messages: [
